@@ -4826,7 +4826,11 @@ namespace Parser {
     }
 
     function parseTypeAnnotation(): TypeNode | undefined {
-        return parseOptional(SyntaxKind.ColonToken) ? parseType() : undefined;
+        if (!parseOptional(SyntaxKind.ColonToken)) {
+            parseErrorAtCurrentToken("Expected type annotation");
+            return undefined;
+        }
+        return parseType();
     }
 
     // EXPRESSIONS
